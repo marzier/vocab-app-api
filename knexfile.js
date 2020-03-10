@@ -15,7 +15,7 @@ module.exports = {
       database: 'bookr',
       port: 5432,
       user: 'postgres',
-      password:  process.env.DB_PW || 'docker' 
+      password: 'docker' //process.env.DB_PW ||
     },
     useNullAsDefault: true,
     migrations: {

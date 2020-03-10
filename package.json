@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "createPG": "docker run --name vocab-postgres -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=bookr -d -p 5432:5432 postgres",
+    "killPG": "docker kill vocab-postgres",
+    "startPG": "docker start vocab-postgres"
   },
   "repository": {
     "type": "git",
