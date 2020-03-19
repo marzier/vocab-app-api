@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const words = require('../models/words.js');
+const words = require('./words-mdl.js/index.js');
 
 // get decks
-router.get('/', (req,res) => {
+router.get('/decks', (req,res) => {
    words.getDecks()
       .then((decks) => {
          res.status(200).json(decks)

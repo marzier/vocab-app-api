@@ -1,12 +1,18 @@
 const express = require('express');
+const cors = require('cors');
+//const db = require('./data/db.js');
+
 const server = express();
+
+server.use(cors());
 
 server.use(express.json());
 
-const wordsRouter = require('./routes/words.js');
-server.use('/api', wordsRouter);
+const authRouter = require('./auth/auth-router.js');
+server.use('/auth', authRouter);
 
-const PORT = process.env.PORT || 6000;
-server.listen(PORT, () => {
-   console.log(`server running on port ${PORT}`)
-});
+const decksRouter = require('./Decks/decks-rtr.js');
+server.use('/decks', decksRouter);
+
+const port = 6001;
+server.listen(port, () => console.log(`Server on ${port}`));
