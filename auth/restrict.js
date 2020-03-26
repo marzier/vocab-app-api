@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
    const { authorization } = req.headers;
 
    if (authorization) {
-      console.log("token provided:", authorization);
+      //console.log("token provided:", authorization);
       jwt.verify(authorization, "asdf", (error, decodedToken) => {
          if (error) {
             return res.status(400).json({error: "You are not authorized"})

@@ -17,7 +17,7 @@ exports.up = function(knex) {
   .createTable('words', tbl => {
       tbl.increments();
       tbl.string('word').notNullable();
-      tbl.string('definition').notNullable();
+      tbl.text('definition').notNullable();
    })
    .createTable('decks_words', tbl => {
       tbl.increments();
