@@ -28,11 +28,9 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.11",
-    "natural": "^0.6.3",
     "node-wordnet": "^0.1.12",
     "pg": "^7.18.2",
-    "wndb-with-exceptions": "^3.0.2",
-    "wordnet-db": "^3.1.11"
+    "wndb-with-exceptions": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

@@ -26,15 +26,15 @@ exports.up = function(knex) {
          .references('id')
          .inTable('decks')
          .notNullable()
-         // .onDelete('RESTRICT')
-         // .onUpdate('CASCADE');
+         .onDelete('CASCADE')
+         .onUpdate('CASCADE');
       tbl.integer('word_id')
          .unsigned()
          .references('id')
          .inTable('words')
          .notNullable()
-         // .onDelete('RESTRICT')
-         // .onUpdate('CASCADE');
+         .onDelete('CASCADE')
+         .onUpdate('CASCADE');
    })
 };
 

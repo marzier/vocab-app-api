@@ -1,40 +1,13 @@
 const db = require('../data/dbConfig.js');
 
-
-// var fs = require('fs');  // req for natural and wordnet-db
-// const natural = require('natural');
-// const wordnet = new natural.WordNet();
-
-// var WordNet = require('node-wordnet');
-// var wordnet2 = new WordNet();
-
-// const generateWordEntry = word => {
-//    let wordObj = {};
-//    wordObj.definition = "";
-
-//    wordnet.lookup(word, function(entries) {
-//       entries.forEach((entry)=>{
-//          wordObj.word = word;
-//          wordObj.definition += entry.gloss.replace(/"/g, "'"  ).trim() + '***' ; 
-//       });
-//   });
-
-//   return wordObj;
-// }
-
-// const mockWordList = ["timid", "errant", "missive"];
-// mockWordList.forEach((word)=>{
-//    generateWordEntry(word);
-// });
-
-
 module.exports = {
    getWords,
    getWordByWord,
    insertWordsToDeck,
-   changeWordDefinition,
    connectDecks_Words, 
    getAllDecks, // for testing
+   remove,
+   update,
 }
 
 function getWords() {
@@ -51,7 +24,6 @@ function insertWordsToDeck(words) {
    return db('words')
       .insert(words, 'id')
 }
-
 
 
 function getAllDecks() {
@@ -72,11 +44,76 @@ function connectDecks_Words(deck_name, wordIds) {
          });
 }
 
-
-
-function changeWordDefinition() {
-
+function remove(username, deck_name, word) {
+   return db('users')
+            .select('id')
+            .where({username})
+            .first()
+            .then(({ id }) => {
+               return db('decks')
+                  .select('id')
+                  .where({user_id:id, deck_name})
+                  .first()
+            })
+            .then(( { id } ) => {
+               return db('decks_words')
+                  .select('words.id')
+                  .join('words', 'words.id', 'decks_words.word_id')
+                  .where({deck_id:id})
+                  .where({word})
+                  .first()
+            })
+            .then(( { id } ) => {
+               return db('words')
+                  .where({id})
+                  .del()
+            })
+            // for debug: details db erros in console
+            // .then((t) => {
+            //    console.log('t:', t)
+            // })
+            // .catch((c) => {
+            //    console.log('c:', c)
+            // });
+      
 }
+
+
+function update(username, deck_name, word, wordObj) {
+   return db('users')
+            .select('id')
+            .where({username})
+            .first()
+            .then(({ id }) => {
+               return db('decks')
+                  .select('id')
+                  .where({user_id:id, deck_name})
+                  .first()
+            })
+            .then(( { id } ) => {
+               return db('decks_words')
+                  .select('words.id')
+                  .join('words', 'words.id', 'decks_words.word_id')
+                  .where({deck_id:id})
+                  .where({word})
+                  .first()
+            })
+            .then(( { id } ) => {
+               return db('words')
+                  .where({id})
+                  .update(wordObj)
+            })
+            // for debug: details db erros in console
+            // .then((t) => {
+            //    console.log('t:', t)
+            // })
+            // .catch((c) => {
+            //    console.log('c:', c)
+            // });
+      
+}
+
+
 
 
 // also want to be able to add words (without using WordNet to fill in the defintions)

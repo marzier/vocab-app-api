@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Words = require('./words-mdl.js');
+const restrict = require('../auth/restrict.js');
 
 var WordNet = require('node-wordnet');
 var wordnet2 = new WordNet();
+
 
 
 // get words
@@ -20,7 +22,7 @@ router.get('/', (req,res) => {
 });
 
 // insert words to deck
-router.post('/', (req,res) => {
+router.post('/', restrict, (req,res) => {
    let { words, deck_name } = req.body;
 
    console.log("deck_name:", deck_name)
@@ -77,7 +79,6 @@ router.post('/', (req,res) => {
                         })
                      });
                })
-
       })
       .catch((error) => {
          res.status(500).json({
@@ -85,8 +86,6 @@ router.post('/', (req,res) => {
             error
          })
       })
-
-
    ////// for a single word
    // let testWord = 'dad';
 
@@ -114,12 +113,30 @@ router.post('/', (req,res) => {
    
 });
 
+// delete
+router.delete('/', restrict, (req,res) => {
+   const { deck_name, word } = req.body;
+   const username = req.user.username;
 
-// get decks
-router.get('/decks', (req,res) => {
-   Words.connectDecks_Works('U1 Barrons', wordIds)
-      .then((stuff) => {
-         res.status(200).json(stuff)
+   Words.remove(username, deck_name, word)
+      .then(() => {
+         res.status(200).json({message: `deleted - ${word}`})
+      })
+      .catch((error) => {
+         res.status(500).json({
+            error
+         })
+      });
+});
+
+// edit word
+router.put('/', restrict, (req,res) => {
+   const { originalWord, word, definition, deck_name } = req.body;
+   const username = req.user.username;
+
+   Words.update(username, deck_name, originalWord, {word,definition})
+      .then(() => {
+         res.status(200).json({message: `updated - ${word}`})
       })
       .catch((error) => {
          res.status(500).json({
