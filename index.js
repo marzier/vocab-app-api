@@ -3,9 +3,16 @@ const cors = require('cors');
 //const db = require('./data/db.js');
 const server = express();
 
+var whitelist = ['http://zen-vocab.herokuapp.com/', 'https://zen-vocab.herokuapp.com/']
 var corsOptions = {
-   origin: 'http://zen-vocab.herokuapp.com',
- }
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 server.use(cors(corsOptions));
 
 server.use(express.json());
