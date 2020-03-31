@@ -3,7 +3,7 @@ const cors = require('cors');
 //const db = require('./data/db.js');
 const server = express();
 
-var whitelist = ['http://zen-vocab.herokuapp.com/', 'https://zen-vocab.herokuapp.com/']
+var whitelist = ['http://zen-vocab.herokuapp.com', 'https://zen-vocab.herokuapp.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
