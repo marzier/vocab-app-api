@@ -25,7 +25,6 @@ router.get('/', (req,res) => {
 router.post('/', restrict, (req,res) => {
    let { words, deck_name } = req.body;
 
-   console.log("deck_name:", deck_name)
    // 1. add words (shape: "ban \n can \n bad"), get all ids
    // 2. add to decks_words
 
@@ -118,6 +117,8 @@ router.delete('/', restrict, (req,res) => {
    const { deck_name, word } = req.body;
    const username = req.user.username;
 
+   console.log("in router.del - deck_name,word,username: ", deck_name,word,username)
+
    Words.remove(username, deck_name, word)
       .then(() => {
          res.status(200).json({message: `deleted - ${word}`})
@@ -144,6 +145,33 @@ router.put('/', restrict, (req,res) => {
          })
       });
 });
+
+
+// add word from one deck to another 
+router.post('/copy', restrict, (req,res) => {
+   const {word, definition, deck_name } = req.body;
+   const username = req.user.username;
+
+   console.log("in /copy post, word,definition,deck_name:", word, definition, deck_name);
+   
+   Promise.all([Words.getDeckID(username, deck_name), Words.insertWord({word,definition})])
+      .then(([deckID, wordID])=>{
+         console.log("deckID, wordID:", deckID, wordID);
+         Words.insertDecksWords(deckID.id, wordID[0])
+            .then((stuff) => {
+               res.status(200).json({message: "successfully copied word to new deck"})
+            })
+         
+      })
+      .catch((error) => {
+         console.log("cannot add to that deck", error)
+         res.status(200).json({message: "error adding to that other deck"})
+      })
+
+});
+
+
+
 
 
 module.exports = router;

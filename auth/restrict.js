@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
    const { authorization } = req.headers;
 
+   // console.log("in restrict, res:", res);
+   // console.log("in restrict, res body:", res.body);
+   // console.log("in restrict, res headers:", res.headers);
+
    if (authorization) {
       //console.log("token provided:", authorization);
       jwt.verify(authorization, "asdf", (error, decodedToken) => {

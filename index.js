@@ -17,5 +17,5 @@ server.use('/decks', decksRouter);
 const wordsRouter = require('./Words/words-rtr.js');
 server.use('/words', wordsRouter);
 
-const port = 6001;
+const port = process.env.PORT || 6001;
 server.listen(port, () => console.log(`Server on ${port}`));

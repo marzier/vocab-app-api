@@ -3,11 +3,14 @@ const db = require('../data/dbConfig.js');
 module.exports = {
    getWords,
    getWordByWord,
+   insertWord,
    insertWordsToDeck,
    connectDecks_Words, 
    getAllDecks, // for testing
    remove,
    update,
+   getDeckID,
+   insertDecksWords,
 }
 
 function getWords() {
@@ -18,8 +21,12 @@ function getWordByWord(word) {
    return db('words').where({ word }).first();
 }
 
+function insertWord({word, definition}) {
+   return db('words').insert({word, definition}, 'id')
+}
+
 /////
-function insertWordsToDeck(words) {
+function insertWordsToDeck(words) { // words is a list of wordObjs with word and def fields i  think
    // let generateEntries = words2List.map(word=>generateWordEntry(word));
    return db('words')
       .insert(words, 'id')
@@ -114,11 +121,6 @@ function update(username, deck_name, word, wordObj) {
 }
 
 
-
-
-// also want to be able to add words (without using WordNet to fill in the defintions)
-
-
 // helper functions
 function findDeckByName(deck_name) {
    return db('decks').where({deck_name}).first();
@@ -127,4 +129,22 @@ function findDeckByName(deck_name) {
 
 
 
+// also want to be able to add words (without using WordNet to fill in the defintions)
+
+function getDeckID(username, deck_name) {
+   return db('users')
+      .select('id')
+      .where({username})
+      .first()
+      .then(({ id }) => {
+         return db('decks')
+            .select('id')
+            .where({user_id:id, deck_name})
+            .first()
+      })
+}
+
+function insertDecksWords(deck_id, word_id) {
+   return db('decks_words').insert({deck_id, word_id})
+}
 
