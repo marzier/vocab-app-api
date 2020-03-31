@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 //const db = require('./data/db.js');
-
 const server = express();
 
-server.use(cors());
+var corsOptions = {
+   origin: 'http://zen-vocab.herokuapp.com',
+ }
+server.use(cors(corsOptions));
 
 server.use(express.json());
 
