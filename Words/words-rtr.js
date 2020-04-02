@@ -67,8 +67,8 @@ router.post('/', restrict, (req,res) => {
                // });
                .then((ids) => {
                   Words.connectDecks_Words(deck_name, ids)
-                     .then((stuff) => {
-                        res.status(200).json({stuff, notFound})  // returns list of words not found and sends to client
+                     .then((decks_words_ids_created) => {
+                        res.status(200).json({decks_words_ids_created, notFound})  // returns list of words not found and sends to client
                      })
                      .catch((error) => {
                         res.status(500).json({
@@ -117,7 +117,7 @@ router.delete('/', restrict, (req,res) => {
    const { deck_name, word } = req.body;
    const username = req.user.username;
 
-   console.log("in router.del - deck_name,word,username: ", deck_name,word,username)
+   //console.log("in router.del - deck_name,word,username: ", deck_name,word,username)
 
    Words.remove(username, deck_name, word)
       .then(() => {
