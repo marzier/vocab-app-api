@@ -44,7 +44,7 @@ router.post('/', restrict, (req,res) => {
             wordObj.definition = "";
             entries.forEach((entry)=>{
                wordObj.word = word;
-               wordObj.definition += entry.gloss.replace(/"/g, "'"  ).trim() + '\n' ; 
+               wordObj.definition += entry.gloss.replace(/"/g, "'"  ).trim() + '\n\n' ; 
             });
             entriesList.push(wordObj)
          })
