@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 
    if (authorization) {
       //console.log("token provided:", authorization);
-      jwt.verify(authorization, "asdf", (error, decodedToken) => {
+      jwt.verify(authorization, process.env.JWT_SCRET, (error, decodedToken) => {
          if (error) {
             return res.status(400).json({error: "You are not authorized"})
          } else {
@@ -22,3 +22,7 @@ module.exports = (req, res, next) => {
       return res.status(400).json({error: "No token provided"})
    }
 }
+
+
+// was 
+//       jwt.verify(authorization, "asdf", (error, decodedToken) => {

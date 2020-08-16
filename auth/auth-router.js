@@ -15,7 +15,7 @@ function generateToken(user) {
       id: user.id
    }
 
-   return jwt.sign(payload, process.env.JWT_SCRET || "asdf", options)
+   return jwt.sign(payload, process.env.JWT_SCRET, options)
 }
 
 // get all users
